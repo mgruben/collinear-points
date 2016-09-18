@@ -33,7 +33,7 @@ public class FastCollinearPoints {
      * The number of line segments
      * @return 
      */
-    public           int numberOfSegments() {
+    public int numberOfSegments() {
         
     }
     
