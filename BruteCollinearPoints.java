@@ -28,7 +28,12 @@ public class BruteCollinearPoints {
      */
     public BruteCollinearPoints(Point[] points) {
         segments = 0;
-        
+        for (int i = 0; i < points.length - 3; i++) {
+            double slopeA = points[i].slopeTo(points[i + 1]);
+            double slopeB = points[i].slopeTo(points[i + 2]);
+            double slopeC = points[i].slopeTo(points[i + 3]);
+            if (slopeA == slopeB && slopeB == slopeC) segments++;
+        }
     }
     
     /**
