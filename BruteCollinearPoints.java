@@ -32,6 +32,9 @@ public class BruteCollinearPoints {
      * @param points 
      */
     public BruteCollinearPoints(Point[] points) {
+        if (points == null) throw new java.lang.NullPointerException();
+        for (Point p: points) if (p == null) 
+            throw new java.lang.NullPointerException();
         segmentCount = 0;
         segments = new LineSegment[points.length / 4];
         segmentHead = 0;
