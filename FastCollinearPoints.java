@@ -1,3 +1,6 @@
+
+import java.util.Arrays;
+
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
  *
@@ -36,7 +39,7 @@ public class FastCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
-        
+        Arrays.sort(points);
     }
     
     /**
