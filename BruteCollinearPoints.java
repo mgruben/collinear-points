@@ -35,7 +35,7 @@ public class BruteCollinearPoints {
         if (points == null) throw new java.lang.NullPointerException();
         for (int i = 0; i < points.length - 1; i++) {
             if (points[i] == null) throw new java.lang.NullPointerException();
-            for (int j = 0; j < points.length; j++) {
+            for (int j = i + 1; j < points.length; j++) {
                 if (points[i].compareTo(points[j]) == 0)
                     throw new java.lang.IllegalArgumentException();
             }
@@ -52,13 +52,18 @@ public class BruteCollinearPoints {
                     subset[2] = points[k];
                     for (int l = k + 1; l < points.length; l++) {
                         subset[3] = points[l];
+                        for (Point p: subset) System.out.print(p + " ");
+                        System.out.println();
                         Arrays.sort(subset);
+                        for (Point p: subset) System.out.print(p + " ");
+                        System.out.println();
                         double slopeA = subset[0].slopeTo(subset[1]);
                         double slopeB = subset[0].slopeTo(subset[2]);
                         double slopeC = subset[0].slopeTo(subset[3]);
                         if (slopeA == slopeB && slopeB == slopeC) {
                             segmentCount++;
-                            segments[segmentHead++] = new LineSegment(points[i], points[i + 3]);
+                            segments[segmentHead++] =
+                                    new LineSegment(subset[0], subset[3]);
                             i += 3;
                         }
                     }
