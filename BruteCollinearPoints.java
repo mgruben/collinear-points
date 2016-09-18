@@ -20,12 +20,14 @@
  * @author Michael <GrubenM@GMail.com>
  */
 public class BruteCollinearPoints {
-   
+    private int segments;
+
     /**
      * Finds all line segments containing 4 points
      * @param points 
      */
     public BruteCollinearPoints(Point[] points) {
+        segments = 0;
         
     }
     
