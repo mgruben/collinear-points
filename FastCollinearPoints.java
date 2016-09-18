@@ -39,7 +39,11 @@ public class FastCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
-        Arrays.sort(points);
+        for (Point p: points) System.out.print(p + " ");
+        System.out.println();
+        Arrays.sort(points, points[3].slopeOrder());
+        for (Point p: points) System.out.print(p + " ");
+        System.out.println();
     }
     
     /**
@@ -56,5 +60,14 @@ public class FastCollinearPoints {
      */
     public LineSegment[] segments() {
         return segments;
+    }
+    
+    public static void main(String[] args) {
+        Point[] points = new Point[4];
+        points[0] = new Point(0, 0);
+        points[1] = new Point(1, 1);
+        points[2] = new Point(1, 2);
+        points[3] = new Point(1, 3);
+        FastCollinearPoints f = new FastCollinearPoints(points);
     }
 }
