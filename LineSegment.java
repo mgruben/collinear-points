@@ -37,7 +37,8 @@ public class LineSegment {
     public void draw() {
         p.drawTo(q);
     }
-
+    
+    @Override
     /**
      * Returns a string representation of this line segment
      * This method is provide for debugging;
@@ -48,7 +49,8 @@ public class LineSegment {
     public String toString() {
         return p + " -> " + q;
     }
-
+    
+    @Override
     /**
      * Throws an exception if called. The hashCode() method is not supported because
      * hashing has not yet been introduced in this course. Moreover, hashing does not
