@@ -52,11 +52,7 @@ public class BruteCollinearPoints {
                     subset[2] = points[k];
                     for (int l = k + 1; l < points.length; l++) {
                         subset[3] = points[l];
-                        for (Point p: subset) System.out.print(p + " ");
-                        System.out.println();
                         Arrays.sort(subset);
-                        for (Point p: subset) System.out.print(p + " ");
-                        System.out.println();
                         double slopeA = subset[0].slopeTo(subset[1]);
                         double slopeB = subset[0].slopeTo(subset[2]);
                         double slopeC = subset[0].slopeTo(subset[3]);
@@ -64,7 +60,6 @@ public class BruteCollinearPoints {
                             segmentCount++;
                             segments[segmentHead++] =
                                     new LineSegment(subset[0], subset[3]);
-                            i += 3;
                         }
                     }
                 }
