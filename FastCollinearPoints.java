@@ -20,6 +20,8 @@
  * @author Michael <GrubenM@GMail.com>
  */
 public class FastCollinearPoints {
+    private int segmentCount;
+    private LineSegment[] segments;
     
     /**
      * Finds all line segments containing 4 or more points
@@ -34,6 +36,7 @@ public class FastCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
+        
     }
     
     /**
@@ -41,7 +44,7 @@ public class FastCollinearPoints {
      * @return 
      */
     public int numberOfSegments() {
-        
+        return segmentCount;
     }
     
     /**
@@ -49,6 +52,6 @@ public class FastCollinearPoints {
      * @return 
      */
     public LineSegment[] segments() {
-        
+        return segments;
     }
 }
