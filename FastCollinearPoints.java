@@ -26,7 +26,14 @@ public class FastCollinearPoints {
      * @param points 
      */
     public FastCollinearPoints(Point[] points) {
-       
+        if (points == null) throw new java.lang.NullPointerException();
+        for (int i = 0; i < points.length - 1; i++) {
+            if (points[i] == null) throw new java.lang.NullPointerException();
+            for (int j = i + 1; j < points.length; j++) {
+                if (points[i].compareTo(points[j]) == 0)
+                    throw new java.lang.IllegalArgumentException();
+            }
+        }
     }
     
     /**
