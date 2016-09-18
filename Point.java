@@ -113,7 +113,8 @@ public class Point implements Comparable<Point> {
         /* DO NOT MODIFY */
         throw new UnsupportedOperationException("calling hashCode() is not permitted on this assignment");
     }
-
+    
+    @Override
     /**
      * You should not call the equals() method on this assignment.
      * This means that you should not use java.util.TreeMap or java.util.TreeSet.
