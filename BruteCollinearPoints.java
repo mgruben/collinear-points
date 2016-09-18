@@ -1,3 +1,6 @@
+
+import java.util.Arrays;
+
 /*
  * Copyright (C) 2016 Michael <GrubenM@GMail.com>
  *
@@ -32,14 +35,26 @@ public class BruteCollinearPoints {
         segmentCount = 0;
         segments = new LineSegment[points.length / 4];
         segmentHead = 0;
+        Point[] subset = new Point[4];
         for (int i = 0; i < points.length - 3; i++) {
-            double slopeA = points[i].slopeTo(points[i + 1]);
-            double slopeB = points[i].slopeTo(points[i + 2]);
-            double slopeC = points[i].slopeTo(points[i + 3]);
-            if (slopeA == slopeB && slopeB == slopeC) {
-                segmentCount++;
-                segments[segmentHead++] = new LineSegment(points[i], points[i + 3]);
-                i += 3;
+            subset[0] = points[i];
+            for (int j = i + 1; i < points.length - 2; j++) {
+                subset[1] = points[j];
+                for (int k = j + 1; k < points.length - 1; k++) {
+                    subset[2] = points[k];
+                    for (int l = k + 1; l < points.length; l++) {
+                        subset[3] = points[l];
+                        Arrays.sort(subset);
+                        double slopeA = subset[0].slopeTo(subset[1]);
+                        double slopeB = subset[0].slopeTo(subset[2]);
+                        double slopeC = subset[0].slopeTo(subset[3]);
+                        if (slopeA == slopeB && slopeB == slopeC) {
+                            segmentCount++;
+                            segments[segmentHead++] = new LineSegment(points[i], points[i + 3]);
+                            i += 3;
+                        }
+                    }
+                }
             }
         }
     }
@@ -62,10 +77,10 @@ public class BruteCollinearPoints {
     
     public static void main(String[] args) {
         Point[] points = new Point[4];
-        points[0] = new Point(0, 0);
-        points[1] = new Point(0, 2);
-        points[2] = new Point(0, 1);
-        points[3] = new Point(0, 3);
+        points[0] = new Point(0, 2);
+        points[1] = new Point(0, 0);
+        points[2] = new Point(0, 3);
+        points[3] = new Point(0, 1);
         BruteCollinearPoints b = new BruteCollinearPoints(points);
         System.out.println(b.segments[0]);
     }
