@@ -61,7 +61,8 @@ public class Point implements Comparable<Point> {
     public double slopeTo(Point that) {
         /* YOUR CODE HERE */
     }
-
+    
+    @Override
     /**
      * Compares two points by y-coordinate, breaking ties by x-coordinate.
      * Formally, the invoking point (x0, y0) is less than the argument point
@@ -87,8 +88,8 @@ public class Point implements Comparable<Point> {
     public Comparator<Point> slopeOrder() {
         /* YOUR CODE HERE */
     }
-
-
+    
+    @Override
     /**
      * Returns a string representation of this point.
      * This method is provide for debugging;
@@ -100,7 +101,8 @@ public class Point implements Comparable<Point> {
         /* DO NOT MODIFY */
         return "(" + x + ", " + y + ")";
     }
-
+    
+    @Override
     /**
      * You should not call the hashCode() method on this assignment.
      * This means that you should not use java.util.HashMap or java.util.HashSet.
