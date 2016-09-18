@@ -117,7 +117,7 @@ public class Point implements Comparable<Point> {
     /**
      * You should not call the equals() method on this assignment.
      * This means that you should not use java.util.TreeMap or java.util.TreeSet.
-     *
+     */
     public boolean equals(Object that) {
         /* DO NOT MODIFY */
         throw new UnsupportedOperationException("calling equals() is not permitted on this assignment");
