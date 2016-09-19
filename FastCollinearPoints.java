@@ -69,8 +69,10 @@ public class FastCollinearPoints {
                     Point[] toAdd = new Point[collinearSize];
                     for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
-                    enqueue(new LineSegment(toAdd[0],
-                            toAdd[collinearSize - 1]));
+                    if (!exists(i, j)) {
+                        enqueue(new LineSegment(toAdd[0],
+                                toAdd[collinearSize - 1]));
+                    }
                 }
             }
         }
@@ -83,7 +85,7 @@ public class FastCollinearPoints {
      * @param j 
      */
     private boolean exists(int i, int j) {
-        for (int k = 0; k < j; k++)
+        for (int k = 0; k < pts.length - i; k++)
             if (pts[0].compareTo(pts[i + k]) == 0)
                 return true;
         return false;
@@ -101,19 +103,9 @@ public class FastCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        boolean duplicate = false;
-        String el = l.toString();
-        for (int i = 0; i < segmentSize; i++) {
-            if (el.equals(segments[i].toString())) {
-                duplicate = true;
-                break;
-            }
-        }
-        if (!duplicate) {
-            if (segmentSize == segments.length)
-                resize(2 * segments.length, segments);
-            segments[segmentSize++] = l;
-        }
+        if (segmentSize == segments.length)
+            resize(2 * segments.length, segments);
+        segments[segmentSize++] = l;
     }
     
     /**
