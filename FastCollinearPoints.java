@@ -47,35 +47,24 @@ public class FastCollinearPoints {
         segments = new LineSegment[1];
         segmentSize = 0;
         for (int i = 0; i < points.length; i++) {
-            System.out.println(points[i]);
             Arrays.sort(points, points[i].slopeOrder());
-            for (Point p: points) System.out.print(p);
-            System.out.println();
             for (int j = 1; j < points.length; j++) {
                 collinear = new Point[4];
                 collinearSize = 0;
-                System.out.println("Anchor of " + points[0]);
                 double slopeA = points[0].slopeTo(points[j]);
                 enqueue(points[0]);
                 enqueue(points[j]);
                 int c = 0;
-                System.out.print("Examining " + points[j]);
-                System.out.println(" slope of " + slopeA);
                 while (++j < points.length && 
                         slopeA == points[0].slopeTo(points[j])) {
                     c++;
-                    System.out.print("Slope matched slope to " + points[j]);
-                    System.out.println(" slope of " + points[0].slopeTo(points[j]));
                     enqueue(points[j]);
                 }
                 j--;
-                System.out.println(c);
                 if (c >= 2) {
                     Point[] toAdd = new Point[collinearSize];
                     for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
-                    System.out.println("Adding " + toAdd[0] + " and "
-                            + toAdd[collinearSize - 1]);
                     enqueue(new LineSegment(toAdd[0],
                             toAdd[collinearSize - 1]));
                 }
