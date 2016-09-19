@@ -91,9 +91,19 @@ public class FastCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        if (segmentSize == segments.length)
-            resize(2 * segments.length, segments);
-        segments[segmentSize++] = l;
+        boolean duplicate = false;
+        String el = l.toString();
+        for (int i = 0; i < segmentSize; i++) {
+            if (el.equals(segments[i].toString())) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (!duplicate) {
+            if (segmentSize == segments.length)
+                resize(2 * segments.length, segments);
+            segments[segmentSize++] = l;
+        }
     }
     
     /**
