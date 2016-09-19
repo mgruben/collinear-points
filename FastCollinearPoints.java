@@ -30,6 +30,7 @@ public class FastCollinearPoints {
     private int segmentSize;
     private Point[] collinear;
     private int collinearSize;
+    private Point[] pts;
     
     /**
      * Finds all line segments containing 4 or more points
@@ -44,21 +45,24 @@ public class FastCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
+        pts = new Point[points.length];
+        for (int i = 0; i < points.length; i++) pts[i] = points[i];
+        
         segments = new LineSegment[1];
         segmentSize = 0;
-        for (int i = 0; i < points.length; i++) {
-            Arrays.sort(points, points[i].slopeOrder());
-            for (int j = 1; j < points.length; j++) {
+        for (int i = 0; i < pts.length; i++) {
+            Arrays.sort(pts, pts[i].slopeOrder());
+            for (int j = 1; j < pts.length; j++) {
                 collinear = new Point[4];
                 collinearSize = 0;
-                double slopeA = points[0].slopeTo(points[j]);
-                enqueue(points[0]);
-                enqueue(points[j]);
+                double slopeA = pts[0].slopeTo(pts[j]);
+                enqueue(pts[0]);
+                enqueue(pts[j]);
                 int c = 0;
-                while (++j < points.length && 
-                        slopeA == points[0].slopeTo(points[j])) {
+                while (++j < pts.length && 
+                        slopeA == pts[0].slopeTo(pts[j])) {
                     c++;
-                    enqueue(points[j]);
+                    enqueue(pts[j]);
                 }
                 j--;
                 if (c >= 2) {
@@ -98,6 +102,7 @@ public class FastCollinearPoints {
             segments[segmentSize++] = l;
         }
     }
+    
     
     /**
      * "Add the item"
