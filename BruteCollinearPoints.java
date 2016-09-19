@@ -93,19 +93,9 @@ public class BruteCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        boolean duplicate = false;
-        String el = l.toString();
-        for (int i = 0; i < size; i++) {
-            if (el.equals(segments[i].toString())) {
-                duplicate = true;
-                break;
-            }
-        }
-        if (!duplicate) {
-            if (size == segments.length)
-                resize(2 * segments.length, segments);
-            segments[size++] = l;
-        }
+        if (size == segments.length)
+            resize(2 * segments.length, segments);
+        segments[size++] = l;
     }
     
     /**
