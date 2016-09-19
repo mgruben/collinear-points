@@ -44,28 +44,28 @@ public class FastCollinearPoints {
         segmentCount = 0;
         segments = new LineSegment[points.length];
         segmentHead = 0;
-        for (int i = 0; i < points.length - 3; i++) {
+        for (int i = 0; i < points.length - 1; i++) {
             System.out.println(points[i]);
             Arrays.sort(points, points[i].slopeOrder());
             for (Point p: points) System.out.print(p);
             System.out.println();
-            for (int j = i + 1; j < points.length; j++) {
-                System.out.println("Anchor of " + points[i]);
-                double slopeA = points[i].slopeTo(points[j]);
+            for (int j = 1; j < points.length; j++) {
+                System.out.println("Anchor of " + points[0]);
+                double slopeA = points[0].slopeTo(points[j]);
                 int c = 0;
                 System.out.print("Examining " + points[j]);
                 System.out.println(" slope of " + slopeA);
                 while (j++ < points.length - 1 && 
-                        slopeA == points[i].slopeTo(points[j])) {
+                        slopeA == points[0].slopeTo(points[j])) {
                     c++;
                     System.out.print("Slope matched slope to " + points[j]);
-                    System.out.println(" slope of " + points[i].slopeTo(points[j]));
+                    System.out.println(" slope of " + points[0].slopeTo(points[j]));
                 }
                 j--;
                 System.out.println(c);
                 if (c >= 2) {
-                    System.out.println("Adding " + points[i] + " and " + points[j]);
-                    segments[segmentHead] = new LineSegment(points[i], points[j]);
+                    System.out.println("Adding " + points[0] + " and " + points[j]);
+                    segments[segmentHead] = new LineSegment(points[0], points[j]);
                     segmentCount++;
                     segmentHead++;
                     j += c;
@@ -102,6 +102,7 @@ public class FastCollinearPoints {
         points[7] = new Point(0, 1);
         points[8] = new Point(-1, 1);
         FastCollinearPoints f = new FastCollinearPoints(points);
-        System.out.println(f.segments[0]);
+        for (LineSegment l: f.segments())
+            System.out.println(l);
     }
 }
