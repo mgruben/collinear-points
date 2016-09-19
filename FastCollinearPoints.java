@@ -25,7 +25,9 @@ import java.util.Comparator;
  */
 public class FastCollinearPoints {
     private LineSegment[] segments;
-    private int size;
+    private int segmentSize;
+    private Point[] collinear;
+    private int collinearSize;
     
     /**
      * Finds all line segments containing 4 or more points
@@ -41,15 +43,19 @@ public class FastCollinearPoints {
             }
         }
         segments = new LineSegment[1];
-        size = 0;
+        segmentSize = 0;
         for (int i = 0; i < points.length; i++) {
             System.out.println(points[i]);
             Arrays.sort(points, points[i].slopeOrder());
             for (Point p: points) System.out.print(p);
             System.out.println();
             for (int j = 1; j < points.length; j++) {
+                collinear = new Point[4];
+                collinearSize = 0;
                 System.out.println("Anchor of " + points[0]);
                 double slopeA = points[0].slopeTo(points[j]);
+                enqueue(points[0]);
+                enqueue(points[1]);
                 int c = 0;
                 System.out.print("Examining " + points[j]);
                 System.out.println(" slope of " + slopeA);
@@ -58,12 +64,18 @@ public class FastCollinearPoints {
                     c++;
                     System.out.print("Slope matched slope to " + points[j]);
                     System.out.println(" slope of " + points[0].slopeTo(points[j]));
+                    enqueue(points[j]);
                 }
                 j--;
                 System.out.println(c);
                 if (c >= 2) {
-                    System.out.println("Adding " + points[0] + " and " + points[j]);
-                    enqueue(new LineSegment(points[0], points[j]));
+                    Point[] toAdd = new Point[collinearSize];
+                    for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
+                    Arrays.sort(toAdd);
+                    System.out.println("Adding " + toAdd[0] + " and "
+                            + toAdd[collinearSize - 1]);
+                    enqueue(new LineSegment(toAdd[0],
+                            toAdd[collinearSize - 1]));
                 }
             }
         }
@@ -79,8 +91,24 @@ public class FastCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        if (size == segments.length) resize(2 * segments.length);
-        segments[size++] = l;
+        if (segmentSize == segments.length)
+            resize(2 * segments.length, segments);
+        segments[segmentSize++] = l;
+    }
+    
+    /**
+     * "Add the item"
+     * "Throw a java.lang.NullPointerException if the client attempts to add a
+     * null item"
+     * 
+     * Also doubles the length of the array when it is full.
+     */
+    private void enqueue(Point p)
+    {
+        if (p == null) throw new java.lang.NullPointerException();
+        if (collinearSize == collinear.length)
+            resize(2 * collinear.length, collinear);
+        collinear[collinearSize++] = p;
     }
     
     /**
@@ -93,10 +121,26 @@ public class FastCollinearPoints {
      * can be performed in the new array, however,
      * the ResizingArray is constant.
      */
-    private void resize(int capacity) {
+    private void resize(int capacity, LineSegment[] l) {
         LineSegment[] copy = new LineSegment[capacity];
-        for (int i = 0; i < size; i++) copy[i] = segments[i];
+        for (int i = 0; i < segmentSize; i++) copy[i] = l[i];
         segments = copy;
+    }
+    
+        /**
+     * Resizes the array segments to [capacity].
+     * 
+     * This is a quadratic operation in the length of a,
+     * and so should only be performed sparingly.
+     * 
+     * Amortizing this cost over the number of operations which
+     * can be performed in the new array, however,
+     * the ResizingArray is constant.
+     */
+    private void resize(int capacity, Point[] p) {
+        Point[] copy = new Point[capacity];
+        for (int i = 0; i < collinearSize; i++) copy[i] = p[i];
+        collinear = copy;
     }
     
     /**
@@ -104,7 +148,7 @@ public class FastCollinearPoints {
      * @return 
      */
     public int numberOfSegments() {
-        return size;
+        return segmentSize;
     }
     
     /**
