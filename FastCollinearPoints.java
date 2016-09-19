@@ -64,7 +64,6 @@ public class FastCollinearPoints {
                 if (c >= 2) {
                     System.out.println("Adding " + points[0] + " and " + points[j]);
                     enqueue(new LineSegment(points[0], points[j]));
-                    j += c;
                 }
             }
         }
