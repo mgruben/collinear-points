@@ -35,6 +35,7 @@ public class BruteCollinearPoints {
      */
     public BruteCollinearPoints(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
+        Arrays.sort(points);
         for (int i = 0; i < points.length - 1; i++) {
             if (points[i] == null) throw new java.lang.NullPointerException();
             for (int j = i + 1; j < points.length; j++) {
@@ -42,12 +43,12 @@ public class BruteCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
-        segments = new LineSegment[points.length / 4];
+        segments = new LineSegment[1];
         size = 0;
         Point[] subset = new Point[4];
         for (int i = 0; i < points.length - 3; i++) {
             subset[0] = points[i];
-            for (int j = i + 1; i < points.length - 2; j++) {
+            for (int j = i + 1; j < points.length - 2; j++) {
                 subset[1] = points[j];
                 for (int k = j + 1; k < points.length - 1; k++) {
                     subset[2] = points[k];
@@ -58,13 +59,55 @@ public class BruteCollinearPoints {
                         double slopeB = subset[0].slopeTo(subset[2]);
                         double slopeC = subset[0].slopeTo(subset[3]);
                         if (slopeA == slopeB && slopeB == slopeC) {
-                            segments[size++] =
-                                    new LineSegment(subset[0], subset[3]);
+                            enqueue(new LineSegment(subset[0], subset[3]));
                         }
                     }
                 }
             }
         }
+    }
+    
+    /**
+     * "Add the item"
+     * "Throw a java.lang.NullPointerException if the client attempts to add a
+     * null item"
+     * 
+     * Quietly refuses to add duplicate LineSegments.
+     * 
+     * Also doubles the length of the array when it is full.
+     */
+    private void enqueue(LineSegment l)
+    {
+        if (l == null) throw new java.lang.NullPointerException();
+        boolean duplicate = false;
+        String el = l.toString();
+        for (int i = 0; i < size; i++) {
+            if (el.equals(segments[i].toString())) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (!duplicate) {
+            if (size == segments.length)
+                resize(2 * segments.length, segments);
+            segments[size++] = l;
+        }
+    }
+    
+    /**
+     * Resizes the array segments to [capacity].
+     * 
+     * This is a quadratic operation in the length of a,
+     * and so should only be performed sparingly.
+     * 
+     * Amortizing this cost over the number of operations which
+     * can be performed in the new array, however,
+     * the ResizingArray is constant.
+     */
+    private void resize(int capacity, LineSegment[] l) {
+        LineSegment[] copy = new LineSegment[capacity];
+        for (int i = 0; i < size; i++) copy[i] = l[i];
+        segments = copy;
     }
     
     /**
@@ -94,7 +137,7 @@ public class BruteCollinearPoints {
             int y = in.readInt();
             points[i] = new Point(x, y);
         }
-
+                
         // draw the points
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
