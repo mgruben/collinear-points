@@ -51,44 +51,40 @@ public class FastCollinearPoints {
         segments = new LineSegment[1];
         segmentSize = 0;
         for (int i = 0; i < pts.length; i++) {
+            System.out.println(pts[i]);
             Arrays.sort(pts, pts[i].slopeOrder());
+            for (Point p: pts) System.out.print(p);
+            System.out.println();
             for (int j = 1; j < pts.length; j++) {
                 collinear = new Point[4];
                 collinearSize = 0;
+                System.out.println("Anchor of " + pts[0]);
                 double slopeA = pts[0].slopeTo(pts[j]);
                 enqueue(pts[0]);
                 enqueue(pts[j]);
                 int c = 0;
+                System.out.print("Examining " + pts[j]);
+                System.out.println(" slope of " + slopeA);
                 while (++j < pts.length && 
                         slopeA == pts[0].slopeTo(pts[j])) {
                     c++;
+                    System.out.print("Slope matched slope to " + pts[j]);
+                    System.out.println(" slope of " + pts[0].slopeTo(pts[j]));
                     enqueue(pts[j]);
                 }
                 j--;
+                System.out.println(c);
                 if (c >= 2) {
                     Point[] toAdd = new Point[collinearSize];
                     for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
-                    if (!exists(i, j)) {
-                        enqueue(new LineSegment(toAdd[0],
-                                toAdd[collinearSize - 1]));
-                    }
+                    System.out.println("Adding " + toAdd[0] + " and "
+                            + toAdd[collinearSize - 1]);
+                    enqueue(new LineSegment(toAdd[0],
+                            toAdd[collinearSize - 1]));
                 }
             }
         }
-    }
-    
-    
-    /**
-     * Scans pts to determine whether the Line Segment is already present
-     * @param i
-     * @param j 
-     */
-    private boolean exists(int i, int j) {
-        for (int k = 0; k < pts.length - i; k++)
-            if (pts[0].compareTo(pts[i + k]) == 0)
-                return true;
-        return false;
     }
     
     /**
@@ -103,9 +99,19 @@ public class FastCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        if (segmentSize == segments.length)
-            resize(2 * segments.length, segments);
-        segments[segmentSize++] = l;
+        boolean duplicate = false;
+        String el = l.toString();
+        for (int i = 0; i < segmentSize; i++) {
+            if (el.equals(segments[i].toString())) {
+                duplicate = true;
+                break;
+            }
+        }
+        if (!duplicate) {
+            if (segmentSize == segments.length)
+                resize(2 * segments.length, segments);
+            segments[segmentSize++] = l;
+        }
     }
     
     /**
