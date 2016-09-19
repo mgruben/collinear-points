@@ -24,7 +24,6 @@ import java.util.Comparator;
  * @author Michael <GrubenM@GMail.com>
  */
 public class FastCollinearPoints {
-    private int segmentCount;
     private LineSegment[] segments;
     private int segmentHead;
     
@@ -41,7 +40,6 @@ public class FastCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
-        segmentCount = 0;
         segments = new LineSegment[points.length];
         segmentHead = 0;
         for (int i = 0; i < points.length; i++) {
@@ -66,7 +64,6 @@ public class FastCollinearPoints {
                 if (c >= 2) {
                     System.out.println("Adding " + points[0] + " and " + points[j]);
                     segments[segmentHead] = new LineSegment(points[0], points[j]);
-                    segmentCount++;
                     segmentHead++;
                     j += c;
                 }
@@ -79,7 +76,7 @@ public class FastCollinearPoints {
      * @return 
      */
     public int numberOfSegments() {
-        return segmentCount;
+        return segmentHead;
     }
     
     /**
