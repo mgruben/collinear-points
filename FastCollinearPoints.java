@@ -159,13 +159,15 @@ public class FastCollinearPoints {
      * @return 
      */
     public LineSegment[] segments() {
-        return segments;
+        LineSegment[] shrunk = new LineSegment[segmentSize];
+        for (int i = 0; i < segmentSize; i++) shrunk[i] = segments[i];
+        return shrunk;
     }
     
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/input8.txt");
+        In in = new In("collinear/input48.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
