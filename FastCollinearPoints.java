@@ -76,6 +76,19 @@ public class FastCollinearPoints {
         }
     }
     
+    
+    /**
+     * Scans pts to determine whether the Line Segment is already present
+     * @param i
+     * @param j 
+     */
+    private boolean exists(int i, int j) {
+        for (int k = 0; k < j; k++)
+            if (pts[0].compareTo(pts[i + k]) == 0)
+                return true;
+        return false;
+    }
+    
     /**
      * "Add the item"
      * "Throw a java.lang.NullPointerException if the client attempts to add a
@@ -102,7 +115,6 @@ public class FastCollinearPoints {
             segments[segmentSize++] = l;
         }
     }
-    
     
     /**
      * "Add the item"
