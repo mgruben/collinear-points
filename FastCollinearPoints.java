@@ -78,15 +78,27 @@ public class FastCollinearPoints {
                     Point[] toAdd = new Point[collinearSize];
                     for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
-                    System.out.println("Adding " + toAdd[0] + " and "
-                            + toAdd[collinearSize - 1]);
-                    enqueue(new LineSegment(toAdd[0],
-                            toAdd[collinearSize - 1]));
+                    if (!exists(i, j)) {
+                        System.out.println("Adding " + toAdd[0] + " and "
+                                + toAdd[collinearSize - 1]);
+                        enqueue(new LineSegment(toAdd[0],
+                                toAdd[collinearSize - 1]));
+                    }
+                    else System.out.println("Duplicate!! Not adding");
                 }
             }
         }
     }
     
+    /**
+     * Scans pts to determine whether the Line Segment is already present
+     */
+    private boolean exists(int i, int j) {
+        for (int k = 0; k < pts.length - i; k++)
+            if (pts[0].compareTo(pts[i + k]) == 0)
+                return true;
+        return false;
+    }
     /**
      * "Add the item"
      * "Throw a java.lang.NullPointerException if the client attempts to add a
