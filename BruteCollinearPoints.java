@@ -28,6 +28,7 @@ import java.util.Arrays;
 public class BruteCollinearPoints {
     private LineSegment[] segments;
     private int size;
+    private Point[] pts;
 
     /**
      * Finds all line segments containing 4 points
@@ -45,15 +46,18 @@ public class BruteCollinearPoints {
         }
         segments = new LineSegment[1];
         size = 0;
+        pts = new Point[points.length];
+        for (int i = 0; i < points.length; i++) pts[i] = points[i];
+        
         Point[] subset = new Point[4];
-        for (int i = 0; i < points.length - 3; i++) {
-            subset[0] = points[i];
-            for (int j = i + 1; j < points.length - 2; j++) {
-                subset[1] = points[j];
-                for (int k = j + 1; k < points.length - 1; k++) {
-                    subset[2] = points[k];
-                    for (int l = k + 1; l < points.length; l++) {
-                        subset[3] = points[l];
+        for (int i = 0; i < pts.length - 3; i++) {
+            subset[0] = pts[i];
+            for (int j = i + 1; j < pts.length - 2; j++) {
+                subset[1] = pts[j];
+                for (int k = j + 1; k < pts.length - 1; k++) {
+                    subset[2] = pts[k];
+                    for (int l = k + 1; l < pts.length; l++) {
+                        subset[3] = pts[l];
                         Arrays.sort(subset);
                         double slopeA = subset[0].slopeTo(subset[1]);
                         double slopeB = subset[0].slopeTo(subset[2]);
@@ -65,6 +69,16 @@ public class BruteCollinearPoints {
                 }
             }
         }
+    }
+    
+    /**
+     * Scans pts to determine whether the Line Segment is already present
+     */
+    private boolean exists(int i, int j) {
+        for (int k = 0; k < pts.length - i; k++)
+            if (pts[0].compareTo(pts[i + k]) == 0)
+                return true;
+        return false;
     }
     
     /**
@@ -131,7 +145,7 @@ public class BruteCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/input48.txt");
+        In in = new In("collinear/equidistant.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
