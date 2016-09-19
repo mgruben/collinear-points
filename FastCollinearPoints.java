@@ -52,7 +52,7 @@ public class FastCollinearPoints {
         segmentSize = 0;
         for (int i = 0; i < pts.length; i++) {
             System.out.println(pts[i]);
-            Arrays.sort(pts, pts[i].slopeOrder());
+            Arrays.sort(pts, points[i].slopeOrder());
             for (Point p: pts) System.out.print(p);
             System.out.println();
             for (int j = 1; j < pts.length; j++) {
@@ -194,7 +194,7 @@ public class FastCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/input48.txt");
+        In in = new In("collinear/horizontal25.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
