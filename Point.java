@@ -125,27 +125,6 @@ public class Point implements Comparable<Point> {
         /* DO NOT MODIFY */
         return "(" + x + ", " + y + ")";
     }
-    
-    @Override
-    /**
-     * You should not call the hashCode() method on this assignment.
-     * This means that you should not use java.util.HashMap or java.util.HashSet.
-     */
-    public int hashCode() {
-        /* DO NOT MODIFY */
-        throw new UnsupportedOperationException("calling hashCode() is not permitted on this assignment");
-    }
-    
-    @Override
-    /**
-     * You should not call the equals() method on this assignment.
-     * This means that you should not use java.util.TreeMap or java.util.TreeSet.
-     */
-    public boolean equals(Object that) {
-        /* DO NOT MODIFY */
-        throw new UnsupportedOperationException("calling equals() is not permitted on this assignment");
-    }
-
 
     /**
      * Unit tests the Point data type.
