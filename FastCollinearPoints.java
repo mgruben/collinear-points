@@ -55,7 +55,7 @@ public class FastCollinearPoints {
                 System.out.println("Anchor of " + points[0]);
                 double slopeA = points[0].slopeTo(points[j]);
                 enqueue(points[0]);
-                enqueue(points[1]);
+                enqueue(points[j]);
                 int c = 0;
                 System.out.print("Examining " + points[j]);
                 System.out.println(" slope of " + slopeA);
