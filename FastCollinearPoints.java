@@ -40,7 +40,7 @@ public class FastCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
-        segments = new LineSegment[points.length];
+        segments = new LineSegment[1];
         segmentHead = 0;
         for (int i = 0; i < points.length; i++) {
             System.out.println(points[i]);
@@ -63,12 +63,41 @@ public class FastCollinearPoints {
                 System.out.println(c);
                 if (c >= 2) {
                     System.out.println("Adding " + points[0] + " and " + points[j]);
-                    segments[segmentHead] = new LineSegment(points[0], points[j]);
-                    segmentHead++;
+                    enqueue(new LineSegment(points[0], points[j]));
                     j += c;
                 }
             }
         }
+    }
+    
+    /**
+     * "Add the item"
+     * "Throw a java.lang.NullPointerException if the client attempts to add a
+     * null item"
+     * 
+     * Also doubles the length of the array when it is full.
+     */
+    private void enqueue(LineSegment l)
+    {
+        if (l == null) throw new java.lang.NullPointerException();
+        if (segmentHead == segments.length) resize(2 * segments.length);
+        segments[segmentHead++] = l;
+    }
+    
+    /**
+     * Resizes the array segments to [capacity].
+     * 
+     * This is a quadratic operation in the length of a,
+     * and so should only be performed sparingly.
+     * 
+     * Amortizing this cost over the number of operations which
+     * can be performed in the new array, however,
+     * the ResizingArray is constant.
+     */
+    private void resize(int capacity) {
+        LineSegment[] copy = new LineSegment[capacity];
+        for (int i = 0; i < segmentHead; i++) copy[i] = segments[i];
+        segments = copy;
     }
     
     /**
