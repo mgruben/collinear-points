@@ -25,7 +25,7 @@ import java.util.Comparator;
  */
 public class FastCollinearPoints {
     private LineSegment[] segments;
-    private int segmentHead;
+    private int size;
     
     /**
      * Finds all line segments containing 4 or more points
@@ -41,7 +41,7 @@ public class FastCollinearPoints {
             }
         }
         segments = new LineSegment[1];
-        segmentHead = 0;
+        size = 0;
         for (int i = 0; i < points.length; i++) {
             System.out.println(points[i]);
             Arrays.sort(points, points[i].slopeOrder());
@@ -80,8 +80,8 @@ public class FastCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        if (segmentHead == segments.length) resize(2 * segments.length);
-        segments[segmentHead++] = l;
+        if (size == segments.length) resize(2 * segments.length);
+        segments[size++] = l;
     }
     
     /**
@@ -96,7 +96,7 @@ public class FastCollinearPoints {
      */
     private void resize(int capacity) {
         LineSegment[] copy = new LineSegment[capacity];
-        for (int i = 0; i < segmentHead; i++) copy[i] = segments[i];
+        for (int i = 0; i < size; i++) copy[i] = segments[i];
         segments = copy;
     }
     
@@ -105,7 +105,7 @@ public class FastCollinearPoints {
      * @return 
      */
     public int numberOfSegments() {
-        return segmentHead;
+        return size;
     }
     
     /**
