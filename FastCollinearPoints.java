@@ -55,7 +55,7 @@ public class FastCollinearPoints {
                 int c = 0;
                 System.out.print("Examining " + points[j]);
                 System.out.println(" slope of " + slopeA);
-                while (j++ < points.length - 1 && 
+                while (++j < points.length && 
                         slopeA == points[0].slopeTo(points[j])) {
                     c++;
                     System.out.print("Slope matched slope to " + points[j]);
