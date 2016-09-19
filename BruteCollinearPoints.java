@@ -36,18 +36,19 @@ public class BruteCollinearPoints {
      */
     public BruteCollinearPoints(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
-        Arrays.sort(points);
-        for (int i = 0; i < points.length - 1; i++) {
-            if (points[i] == null) throw new java.lang.NullPointerException();
-            for (int j = i + 1; j < points.length; j++) {
-                if (points[i].compareTo(points[j]) == 0)
+        pts = new Point[points.length];
+        for (int i = 0; i < points.length; i++) pts[i] = points[i];
+        
+        Arrays.sort(pts);
+        for (int i = 0; i < pts.length - 1; i++) {
+            if (pts[i] == null) throw new java.lang.NullPointerException();
+            for (int j = i + 1; j < pts.length; j++) {
+                if (pts[i].compareTo(pts[j]) == 0)
                     throw new java.lang.IllegalArgumentException();
             }
         }
         segments = new LineSegment[1];
         size = 0;
-        pts = new Point[points.length];
-        for (int i = 0; i < points.length; i++) pts[i] = points[i];
         
         Point[] subset = new Point[4];
         for (int i = 0; i < pts.length - 3; i++) {
@@ -125,7 +126,7 @@ public class BruteCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/equidistant.txt");
+        In in = new In("collinear/input40.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {

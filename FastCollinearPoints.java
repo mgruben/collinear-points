@@ -38,16 +38,16 @@ public class FastCollinearPoints {
      */
     public FastCollinearPoints(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
-        for (int i = 0; i < points.length - 1; i++) {
-            if (points[i] == null) throw new java.lang.NullPointerException();
-            for (int j = i + 1; j < points.length; j++) {
-                if (points[i].compareTo(points[j]) == 0)
-                    throw new java.lang.IllegalArgumentException();
-            }
-        }
         pts = new Point[points.length];
         for (int i = 0; i < points.length; i++) pts[i] = points[i];
         
+        for (int i = 0; i < pts.length - 1; i++) {
+            if (pts[i] == null) throw new java.lang.NullPointerException();
+            for (int j = i + 1; j < pts.length; j++) {
+                if (pts[i].compareTo(pts[j]) == 0)
+                    throw new java.lang.IllegalArgumentException();
+            }
+        }        
         segments = new LineSegment[1];
         segmentSize = 0;
         for (int i = 0; i < pts.length; i++) {
