@@ -51,40 +51,28 @@ public class FastCollinearPoints {
         segments = new LineSegment[1];
         segmentSize = 0;
         for (int i = 0; i < pts.length; i++) {
-            System.out.println(pts[i]);
             Arrays.sort(pts, points[i].slopeOrder());
-            for (Point p: pts) System.out.print(p);
-            System.out.println();
             for (int j = 1; j < pts.length; j++) {
                 collinear = new Point[4];
                 collinearSize = 0;
-                System.out.println("Anchor of " + pts[0]);
                 double slopeA = pts[0].slopeTo(pts[j]);
                 enqueue(pts[0]);
                 enqueue(pts[j]);
                 int c = 0;
-                System.out.print("Examining " + pts[j]);
-                System.out.println(" slope of " + slopeA);
                 while (++j < pts.length && 
                         slopeA == pts[0].slopeTo(pts[j])) {
                     c++;
-                    System.out.print("Slope matched slope to " + pts[j]);
-                    System.out.println(" slope of " + pts[0].slopeTo(pts[j]));
                     enqueue(pts[j]);
                 }
                 j--;
-                System.out.println(c);
                 if (c >= 2) {
                     Point[] toAdd = new Point[collinearSize];
                     for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
                     if (!exists(i, j)) {
-                        System.out.println("Adding " + toAdd[0] + " and "
-                                + toAdd[collinearSize - 1]);
                         enqueue(new LineSegment(toAdd[0],
                                 toAdd[collinearSize - 1]));
                     }
-                    else System.out.println("Duplicate!! Not adding");
                 }
             }
         }
