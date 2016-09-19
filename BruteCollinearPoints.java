@@ -26,7 +26,6 @@ import java.util.Arrays;
  * @author Michael <GrubenM@GMail.com>
  */
 public class BruteCollinearPoints {
-    private int segmentCount;
     private LineSegment[] segments;
     private int size;
 
@@ -43,7 +42,6 @@ public class BruteCollinearPoints {
                     throw new java.lang.IllegalArgumentException();
             }
         }
-        segmentCount = 0;
         segments = new LineSegment[points.length / 4];
         size = 0;
         Point[] subset = new Point[4];
@@ -60,7 +58,6 @@ public class BruteCollinearPoints {
                         double slopeB = subset[0].slopeTo(subset[2]);
                         double slopeC = subset[0].slopeTo(subset[3]);
                         if (slopeA == slopeB && slopeB == slopeC) {
-                            segmentCount++;
                             segments[size++] =
                                     new LineSegment(subset[0], subset[3]);
                         }
@@ -75,7 +72,7 @@ public class BruteCollinearPoints {
      * @return 
      */
     public int numberOfSegments() {
-        return segmentCount;
+        return size;
     }
     
     /**
