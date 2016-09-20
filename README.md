@@ -1,7 +1,7 @@
 # collinear-points 
 Pattern recognition of four or more collinear points in a two-dimensional Euclidean space.
 
-<a href="http://coursera.cs.princeton.edu/algs4/assignments/collinear.html"><img src="http://i.imgur.com/J8cO0zw.gifv"></a>
+<blockquote class="imgur-embed-pub" lang="en" data-id="J8cO0zw"><a href="//imgur.com/J8cO0zw">Collinear Points</a></blockquote><script async src="//s.imgur.com/min/embed.js" charset="utf-8"></script>
 
 This project was completed for [Algorithms, Part I](https://www.coursera.org/learn/introduction-to-algorithms)
 
