@@ -38,32 +38,32 @@ public class FastCollinearPoints {
      */
     public FastCollinearPoints(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
-        pts = points.clone();
+        Point[] ptsUnsorted = points.clone();
         
-        Arrays.sort(pts);
-        for (int i = 0; i < pts.length - 1; i++) {
-            if (pts[i] == null) throw new java.lang.NullPointerException();
-            if (pts[i].compareTo(pts[i + 1]) == 0)
+        Arrays.sort(ptsUnsorted);
+        for (int i = 0; i < ptsUnsorted.length - 1; i++) {
+            if (ptsUnsorted[i] == null) throw new java.lang.NullPointerException();
+            if (ptsUnsorted[i].compareTo(ptsUnsorted[i + 1]) == 0)
                 throw new java.lang.IllegalArgumentException();
         }
         
         segments = new LineSegment[1];
         segmentSize = 0;
-        Point[] ptsSorted = pts.clone();
+        pts = ptsUnsorted.clone();
         
-        for (int i = 0; i < ptsSorted.length; i++) {
-            Arrays.sort(ptsSorted, pts[i].slopeOrder());
-            for (int j = 1; j < ptsSorted.length; j++) {
+        for (int i = 0; i < pts.length; i++) {
+            Arrays.sort(pts, ptsUnsorted[i].slopeOrder());
+            for (int j = 1; j < pts.length; j++) {
                 collinear = new Point[4];
                 collinearSize = 0;
-                double slopeA = ptsSorted[0].slopeTo(ptsSorted[j]);
-                enqueue(ptsSorted[0]);
-                enqueue(ptsSorted[j]);
+                double slopeA = pts[0].slopeTo(pts[j]);
+                enqueue(pts[0]);
+                enqueue(pts[j]);
                 int c = 1;
-                while (++j < ptsSorted.length && 
-                        slopeA == ptsSorted[0].slopeTo(ptsSorted[j])) {
+                while (++j < pts.length && 
+                        slopeA == pts[0].slopeTo(pts[j])) {
                     c++;
-                    enqueue(ptsSorted[j]);
+                    enqueue(pts[j]);
                 }
                 j--;
                 if (c >= 3) {
