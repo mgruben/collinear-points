@@ -99,19 +99,9 @@ public class FastCollinearPoints {
     private void enqueue(LineSegment l)
     {
         if (l == null) throw new java.lang.NullPointerException();
-        boolean duplicate = false;
-        String el = l.toString();
-        for (int i = 0; i < segmentSize; i++) {
-            if (el.equals(segments[i].toString())) {
-                duplicate = true;
-                break;
-            }
-        }
-        if (!duplicate) {
-            if (segmentSize == segments.length)
-                resize(2 * segments.length, segments);
-            segments[segmentSize++] = l;
-        }
+        if (segmentSize == segments.length)
+            resize(2 * segments.length, segments);
+        segments[segmentSize++] = l;
     }
     
     /**
@@ -182,7 +172,7 @@ public class FastCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/horizontal25.txt");
+        In in = new In("collinear/input48.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
