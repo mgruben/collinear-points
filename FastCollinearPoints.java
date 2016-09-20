@@ -67,7 +67,9 @@ public class FastCollinearPoints {
                 }
                 j--;
                 if (c >= 3) {
-                    Point[] toAdd = collinear.clone();
+                    Point[] toAdd = new Point[collinearSize];
+                    for (int k = 0; k < collinearSize; k++)
+                        toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
                     if (!exists(c, j)) {
                         enqueue(new LineSegment(toAdd[0],
@@ -172,7 +174,7 @@ public class FastCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/input48.txt");
+        In in = new In("collinear/input9.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
