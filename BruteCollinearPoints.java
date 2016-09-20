@@ -28,7 +28,7 @@ import java.util.Arrays;
 public class BruteCollinearPoints {
     private LineSegment[] segments;
     private int size;
-    private Point[] pts;
+    private Point[] pts; // mutates for each new "origin"
 
     /**
      * Finds all line segments containing 4 points
@@ -39,6 +39,11 @@ public class BruteCollinearPoints {
         pts = new Point[points.length];
         for (int i = 0; i < points.length; i++) pts[i] = points[i];
         
+        /**
+         * Checking for null points goes way faster if we've already sorted
+         * the points array, but the API requires that we can't mutate the
+         * incoming points.  Hence we make pts, and sort that.
+         */
         Arrays.sort(pts);
         for (int i = 0; i < pts.length - 1; i++) {
             if (pts[i] == null) throw new java.lang.NullPointerException();
@@ -46,17 +51,33 @@ public class BruteCollinearPoints {
                 throw new java.lang.IllegalArgumentException();
         }
         
+        // Store the segments we've found in a ResizingArray
         segments = new LineSegment[1];
         size = 0;
         
+        /**
+         * "For simplicity, we will not supply any input to BruteCollinearPoints
+         * that has 5 or more collinear points."
+         * <http://coursera.cs.princeton.edu/algs4/assignments/collinear.html>
+         * 
+         * Accordingly, consider all possible combinations of 4 Points,
+         * sort them to determine which Points are the endpoints, and
+         * no additional checks are needed.
+         * 
+         * (e.g., since we won't see 5 collinear Points, we don't have to worry
+         * about later seeing only 4 of them and checking if this is a new
+         * LineSegment.  Also, we don't have the A-B B-A symmetry problem here,
+         * since we're only considering each potential line segment once, and
+         * so we don't have the chance to adopt a different perspective.)
+         */
         Point[] subset = new Point[4];
-        for (int i = 0; i < pts.length - 3; i++) {
+        for (int i = 0 + 0; i < pts.length - 3; i++) {
             subset[0] = pts[i];
             for (int j = i + 1; j < pts.length - 2; j++) {
                 subset[1] = pts[j];
                 for (int k = j + 1; k < pts.length - 1; k++) {
                     subset[2] = pts[k];
-                    for (int l = k + 1; l < pts.length; l++) {
+                    for (int l = k + 1; l < pts.length - 0; l++) {
                         subset[3] = pts[l];
                         Arrays.sort(subset);
                         double slopeA = subset[0].slopeTo(subset[1]);
@@ -76,9 +97,9 @@ public class BruteCollinearPoints {
      * "Throw a java.lang.NullPointerException if the client attempts to add a
      * null item"
      * 
-     * Quietly refuses to add duplicate LineSegments.
-     * 
      * Also doubles the length of the array when it is full.
+     * 
+     * Adapted from the RandomizedQueue assignment.
      */
     private void enqueue(LineSegment l)
     {
@@ -91,12 +112,14 @@ public class BruteCollinearPoints {
     /**
      * Resizes the array segments to [capacity].
      * 
-     * This is a quadratic operation in the length of a,
+     * This is a quadratic operation in the length of segments,
      * and so should only be performed sparingly.
      * 
      * Amortizing this cost over the number of operations which
      * can be performed in the new array, however,
      * the ResizingArray is constant.
+     * 
+     * Adapted from the RandomizedQueue assignment.
      */
     private void resize(int capacity, LineSegment[] l) {
         LineSegment[] copy = new LineSegment[capacity];
@@ -105,7 +128,7 @@ public class BruteCollinearPoints {
     }
     
     /**
-     * The number of line segments
+     * Returns the number of line segments.
      * @return 
      */
     public int numberOfSegments() {
@@ -113,7 +136,7 @@ public class BruteCollinearPoints {
     }
     
     /**
-     * The line segments
+     * Returns a copy of the line segments in an array with no null elements.
      * @return 
      */
     public LineSegment[] segments() {

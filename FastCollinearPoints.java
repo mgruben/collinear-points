@@ -202,7 +202,7 @@ public class FastCollinearPoints {
     /**
      * Resizes the array segments to [capacity].
      * 
-     * This is a quadratic operation in the length of a,
+     * This is a quadratic operation in the length of segments,
      * and so should only be performed sparingly.
      * 
      * Amortizing this cost over the number of operations which
@@ -220,7 +220,7 @@ public class FastCollinearPoints {
         /**
      * Resizes the array segments to [capacity].
      * 
-     * This is a quadratic operation in the length of a,
+     * This is a quadratic operation in the length of collinear,
      * and so should only be performed sparingly.
      * 
      * Amortizing this cost over the number of operations which
