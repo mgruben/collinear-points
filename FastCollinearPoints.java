@@ -83,26 +83,62 @@ public class FastCollinearPoints {
                 collinearSize = 0;
                 
                 /**
-                 * Make our first comparison, and add these points to collinear
+                 * Make our first comparison, and add these points to collinear.
                  * (any two points are collinear)
                  */
                 double slopeA = pts[0].slopeTo(pts[j]);
                 enqueue(pts[0]);
                 enqueue(pts[j]);
-                int c = 1;
                 
+                /**
+                 * Check to see if the next j index would put us outside of
+                 * the pts array, then see if the Point at that index has
+                 * the same slope as slopeA.
+                 * If so, add the Point at that index to our collinear array.
+                 */
                 while (++j < pts.length && 
                         slopeA == pts[0].slopeTo(pts[j])) {
-                    c++;
                     enqueue(pts[j]);
                 }
-                j--;
-                if (c >= 3) {
+                j--; // Since we peeked ahead with j above, move j back.
+                
+                if (collinearSize >= 4) {
+                    
+                    /**
+                     * collinear holds the collinear points we've found so far,
+                     * but we don't know which two are the endpoints.
+                     * 
+                     * Without sorting, we run the risk of mis-stating the
+                     * points that define the line segment when we enqueue to
+                     * segments.
+                     * 
+                     * Unfortunately, we can't just sort collinear, since it's a
+                     * ResizingArray, and probably contains null elements.
+                     * 
+                     * So, copy the Points from collinear into toAdd, sort
+                     * toAdd, then add its first and last Points as a
+                     * LineSegment to segments.
+                     */
                     Point[] toAdd = new Point[collinearSize];
-                    for (int k = 0; k < collinearSize; k++)
+                    for (int k = 0; k < collinearSize; k++) {
                         toAdd[k] = collinear[k];
+                    }
                     Arrays.sort(toAdd);
-                    if (!exists(c, j)) {
+                    
+                    /**
+                     * Ensure we're only adding top-down (or left-to-right)
+                     * line segments.
+                     * 
+                     * Line segment A-B is the same segment as line segment B-A,
+                     * but we can't add them both or we'll have duplicates.
+                     * 
+                     * Accordingly, arbitrarily, only add line segments where
+                     * the current point being considered is above all other
+                     * points (or, if horizontal, is to the left of all other
+                     * points).  This should eliminate the A-B B-A symmetry,
+                     * favoring one and excluding the other.
+                     */
+                    if (anyAbove(j)) {
                         enqueue(new LineSegment(toAdd[0],
                                 toAdd[collinearSize - 1]));
                     }
@@ -112,13 +148,14 @@ public class FastCollinearPoints {
     }
     
     /**
-     * Scans pts to determine whether the Line Segment is already present
+     * Determines whether any of the points to be added are above
+     * (or to the right of) the point currently being considered.
      */
-    private boolean exists(int c, int j) {
-        for (int k = 0; k < c; k++)
+    private boolean anyAbove(int j) {
+        for (int k = 0; k < collinearSize - 1; k++)
             if (pts[0].compareTo(pts[j - k]) > 0)
-                return true;
-        return false;
+                return false;
+        return true;
     }
     /**
      * "Add the item"
@@ -205,7 +242,7 @@ public class FastCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/input9.txt");
+        In in = new In("collinear/input8.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
