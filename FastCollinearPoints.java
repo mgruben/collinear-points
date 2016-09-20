@@ -38,8 +38,7 @@ public class FastCollinearPoints {
      */
     public FastCollinearPoints(Point[] points) {
         if (points == null) throw new java.lang.NullPointerException();
-        pts = new Point[points.length];
-        for (int i = 0; i < points.length; i++) pts[i] = points[i];
+        pts = points.clone();
         
         Arrays.sort(pts);
         for (int i = 0; i < pts.length - 1; i++) {
@@ -50,8 +49,7 @@ public class FastCollinearPoints {
         
         segments = new LineSegment[1];
         segmentSize = 0;
-        Point[] ptsSorted = new Point[points.length];
-        for (int i = 0; i < points.length; i++) ptsSorted[i] = pts[i];
+        Point[] ptsSorted = pts.clone();
         
         for (int i = 0; i < ptsSorted.length; i++) {
             Arrays.sort(ptsSorted, pts[i].slopeOrder());
@@ -61,16 +59,15 @@ public class FastCollinearPoints {
                 double slopeA = ptsSorted[0].slopeTo(ptsSorted[j]);
                 enqueue(ptsSorted[0]);
                 enqueue(ptsSorted[j]);
-                int c = 0;
+                int c = 1;
                 while (++j < ptsSorted.length && 
                         slopeA == ptsSorted[0].slopeTo(ptsSorted[j])) {
                     c++;
                     enqueue(ptsSorted[j]);
                 }
                 j--;
-                if (c >= 2) {
-                    Point[] toAdd = new Point[collinearSize];
-                    for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
+                if (c >= 3) {
+                    Point[] toAdd = collinear.clone();
                     Arrays.sort(toAdd);
                     if (!exists(c, j)) {
                         enqueue(new LineSegment(toAdd[0],
