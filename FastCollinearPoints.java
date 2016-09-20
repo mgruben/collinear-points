@@ -83,7 +83,7 @@ public class FastCollinearPoints {
      */
     private boolean exists(int c, int j) {
         for (int k = 0; k < c; k++)
-            if (pts[0].compareTo(pts[j - k - 1]) > 0)
+            if (pts[0].compareTo(pts[j - k]) > 0)
                 return true;
         return false;
     }
