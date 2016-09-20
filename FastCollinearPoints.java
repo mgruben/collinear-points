@@ -126,7 +126,7 @@ public class FastCollinearPoints {
                     Arrays.sort(toAdd);
                     
                     /**
-                     * Ensure we're only adding top-down (or left-to-right)
+                     * Ensure we're only adding top-down (or right-to-left)
                      * line segments.
                      * 
                      * Line segment A-B is the same segment as line segment B-A,
@@ -134,7 +134,7 @@ public class FastCollinearPoints {
                      * 
                      * Accordingly, arbitrarily, only add line segments where
                      * the current point being considered is above all other
-                     * points (or, if horizontal, is to the left of all other
+                     * points (or, if horizontal, is to the right of all other
                      * points).  This should eliminate the A-B B-A symmetry,
                      * favoring one and excluding the other.
                      */
@@ -150,10 +150,18 @@ public class FastCollinearPoints {
     /**
      * Determines whether any of the points to be added are above
      * (or to the right of) the point currently being considered.
+     * 
+     * This is useful because a line segment can be defined from either
+     * direction, but if we don't want duplicates in our segments array,
+     * we need to arbitrarily decide not to add from one direction.
+     * 
+     * Thus, arbitrarily, this method determines whether any of the points
+     * in the collinear segment to be added are above (or to the right of,
+     * if horizontal) the point being considered.
      */
     private boolean anyAbove(int j) {
         for (int k = 0; k < collinearSize - 1; k++)
-            if (pts[0].compareTo(pts[j - k]) > 0)
+            if (pts[0].compareTo(pts[j - k]) < 0)
                 return false;
         return true;
     }
@@ -162,9 +170,9 @@ public class FastCollinearPoints {
      * "Throw a java.lang.NullPointerException if the client attempts to add a
      * null item"
      * 
-     * Quietly refuses to add duplicate LineSegments.
-     * 
      * Also doubles the length of the array when it is full.
+     * 
+     * Adapted from the RandomizedQueue assignment.
      */
     private void enqueue(LineSegment l)
     {
@@ -180,6 +188,8 @@ public class FastCollinearPoints {
      * null item"
      * 
      * Also doubles the length of the array when it is full.
+     * 
+     * Adapted from the RandomizedQueue assignment.
      */
     private void enqueue(Point p)
     {
@@ -198,6 +208,8 @@ public class FastCollinearPoints {
      * Amortizing this cost over the number of operations which
      * can be performed in the new array, however,
      * the ResizingArray is constant.
+     * 
+     * Adapted from the RandomizedQueue assignment.
      */
     private void resize(int capacity, LineSegment[] l) {
         LineSegment[] copy = new LineSegment[capacity];
@@ -214,6 +226,8 @@ public class FastCollinearPoints {
      * Amortizing this cost over the number of operations which
      * can be performed in the new array, however,
      * the ResizingArray is constant.
+     * 
+     * Adapted from the RandomizedQueue assignment.
      */
     private void resize(int capacity, Point[] p) {
         Point[] copy = new Point[capacity];
@@ -222,7 +236,7 @@ public class FastCollinearPoints {
     }
     
     /**
-     * The number of line segments
+     * Returns the number of line segments.
      * @return 
      */
     public int numberOfSegments() {
@@ -230,8 +244,7 @@ public class FastCollinearPoints {
     }
     
     /**
-     * The line segments
-     * @return 
+     * Returns a copy of the line segments in an array with no null elements.
      */
     public LineSegment[] segments() {
         LineSegment[] shrunk = new LineSegment[segmentSize];
@@ -239,6 +252,10 @@ public class FastCollinearPoints {
         return shrunk;
     }
     
+    /**
+     * Unit Testing
+     * @param args 
+     */
     public static void main(String[] args) {
 
         // read the n points from a file
