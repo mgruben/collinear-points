@@ -41,35 +41,38 @@ public class FastCollinearPoints {
         pts = new Point[points.length];
         for (int i = 0; i < points.length; i++) pts[i] = points[i];
         
+        Arrays.sort(pts);
         for (int i = 0; i < pts.length - 1; i++) {
             if (pts[i] == null) throw new java.lang.NullPointerException();
-            for (int j = i + 1; j < pts.length; j++) {
-                if (pts[i].compareTo(pts[j]) == 0)
-                    throw new java.lang.IllegalArgumentException();
-            }
-        }        
+            if (pts[i].compareTo(pts[i + 1]) == 0)
+                throw new java.lang.IllegalArgumentException();
+        }
+        
         segments = new LineSegment[1];
         segmentSize = 0;
-        for (int i = 0; i < pts.length; i++) {
-            Arrays.sort(pts, points[i].slopeOrder());
-            for (int j = 1; j < pts.length; j++) {
+        Point[] ptsSorted = new Point[points.length];
+        for (int i = 0; i < points.length; i++) ptsSorted[i] = pts[i];
+        
+        for (int i = 0; i < ptsSorted.length; i++) {
+            Arrays.sort(ptsSorted, pts[i].slopeOrder());
+            for (int j = 1; j < ptsSorted.length; j++) {
                 collinear = new Point[4];
                 collinearSize = 0;
-                double slopeA = pts[0].slopeTo(pts[j]);
-                enqueue(pts[0]);
-                enqueue(pts[j]);
+                double slopeA = ptsSorted[0].slopeTo(ptsSorted[j]);
+                enqueue(ptsSorted[0]);
+                enqueue(ptsSorted[j]);
                 int c = 0;
-                while (++j < pts.length && 
-                        slopeA == pts[0].slopeTo(pts[j])) {
+                while (++j < ptsSorted.length && 
+                        slopeA == ptsSorted[0].slopeTo(ptsSorted[j])) {
                     c++;
-                    enqueue(pts[j]);
+                    enqueue(ptsSorted[j]);
                 }
                 j--;
                 if (c >= 2) {
                     Point[] toAdd = new Point[collinearSize];
                     for (int k = 0; k < collinearSize; k++) toAdd[k] = collinear[k];
                     Arrays.sort(toAdd);
-                    if (!exists(i, j)) {
+                    if (!exists(c, j)) {
                         enqueue(new LineSegment(toAdd[0],
                                 toAdd[collinearSize - 1]));
                     }
@@ -81,9 +84,9 @@ public class FastCollinearPoints {
     /**
      * Scans pts to determine whether the Line Segment is already present
      */
-    private boolean exists(int i, int j) {
-        for (int k = 0; k < pts.length - i; k++)
-            if (pts[0].compareTo(pts[i + k]) == 0)
+    private boolean exists(int c, int j) {
+        for (int k = 0; k < c; k++)
+            if (pts[0].compareTo(pts[j - k - 1]) > 0)
                 return true;
         return false;
     }
