@@ -40,7 +40,7 @@ public class FastCollinearPoints {
         if (points == null) throw new java.lang.NullPointerException();
         
         /**
-         * We have three points arrays: points, ptsUnsorted, and pts.
+         * We have three points arrays: points, ptsNullCheck, and pts.
          * 
          * Checking for null points goes way faster if we've already sorted
          * the points array, but the API requires that we can't mutate the
