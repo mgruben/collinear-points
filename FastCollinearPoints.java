@@ -272,6 +272,7 @@ public class FastCollinearPoints {
         StdDraw.enableDoubleBuffering();
         StdDraw.setXscale(0, 32768);
         StdDraw.setYscale(0, 32768);
+        StdDraw.setPenRadius(0.015);
         for (Point p : points) {
             p.draw();
         }
@@ -279,6 +280,7 @@ public class FastCollinearPoints {
 
         // print and draw the line segments
         FastCollinearPoints collinear = new FastCollinearPoints(points);
+        StdDraw.setPenRadius();
         for (LineSegment segment : collinear.segments()) {
             StdOut.println(segment);
             segment.draw();
