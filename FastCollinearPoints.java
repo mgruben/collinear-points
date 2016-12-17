@@ -70,10 +70,11 @@ public class FastCollinearPoints {
         for (int p = 0; p < pts.length; p++) {
             Arrays.sort(pts, ptsNullCheck[p].slopeOrder());
             /**
-             * pts[0] is the current point, the slope to which was used to sort
-             * all other points in the array.  Thus, we start j at 1 so we don't
-             * compare the current point to itself, which wouldn't yield
-             * meaningful information.
+             * Since p.compareTo(p) returns Double.NEGATIVE_INFINITY, p is
+             * always the first point in our sorted array.
+             * 
+             * Thus, we start j at 1 so we don't compare the current point to
+             * itself, which wouldn't yield meaningful information.
              */
             for (int j = 1; j < pts.length; j++) {
                 /**
