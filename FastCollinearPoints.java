@@ -260,7 +260,7 @@ public class FastCollinearPoints {
     public static void main(String[] args) {
 
         // read the n points from a file
-        In in = new In("collinear/input8.txt");
+        In in = new In("collinear/grid5x5.txt");
         int n = in.readInt();
         Point[] points = new Point[n];
         for (int i = 0; i < n; i++) {
@@ -271,8 +271,8 @@ public class FastCollinearPoints {
 
         // draw the points
         StdDraw.enableDoubleBuffering();
-        StdDraw.setXscale(0, 32768);
-        StdDraw.setYscale(0, 32768);
+        StdDraw.setXscale(-300, 32768);
+        StdDraw.setYscale(-300, 32768);
         StdDraw.setPenRadius(0.015);
         for (Point p : points) {
             p.draw();
