@@ -33,7 +33,8 @@ public class FastCollinearPoints {
     private Point[] pts; // mutates for each new "origin"
     
     /**
-     * Finds all line segments containing 4 or more points
+     * Given a collection of unsorted points, stores all line segments
+     * containing 4 or more points.
      * @param points 
      */
     public FastCollinearPoints(Point[] points) {
